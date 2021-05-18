@@ -28,4 +28,4 @@ joblib
 memoized-property
 termcolor
 
-jupyter notebook
+jupyter
