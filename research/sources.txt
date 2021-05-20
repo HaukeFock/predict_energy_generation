@@ -1,0 +1,29 @@
+Spyros Makridakis:
+Statistical and Machine Learning forecasting methods: Concerns and ways forward
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0194889#pone-0194889-t002
+
+Spyros Makridakis:
+The M4 Competition: 100,000 time series and 61 forecasting methods:
+https://www.sciencedirect.com/science/article/pii/S0169207019301128?via%3Dihub#b69
+
+Spyros Makridakis:
+The M4 Competition: Results, findings, conclusion and way
+forward
+https://www.researchgate.net/profile/Spyros-Makridakis/publication/325901666_The_M4_Competition_Results_findings_conclusion_and_way_forward/links/5b2c9aa4aca2720785d66b5e/The-M4-Competition-Results-findings-conclusion-and-way-forward.pdf
+
+
+Slawek Smyl
+A hybrid method of Exponential Smoothing and Recurrent Neural
+Networks for time series forecasting
+https://www.researchgate.net/profile/Slawek-Smyl/publication/334556784_A_hybrid_method_of_exponential_smoothing_and_recurrent_neural_networks_for_time_series_forecasting/links/5d40998992851cd04694ab68/A-hybrid-method-of-exponential-smoothing-and-recurrent-neural-networks-for-time-series-forecasting.pdf
+
+
+Rafal Weron
+Electricity price forecasting: A review of the state-of-the-art
+with a look into the future
+https://core.ac.uk/download/pdf/82113365.pdf
+
+
+Slawek Smyl
+Machine learning methods for GEFCom2017 probabilistic load forecasting
+https://www.researchgate.net/publication/332915869_Machine_learning_methods_for_GEFCom2017_probabilistic_load_forecasting

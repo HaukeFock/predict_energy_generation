@@ -8,6 +8,8 @@ wheel>=0.29
 numpy
 pandas
 scikit-learn
+matplotlib
+seaborn
 
 # tests/linter
 black
@@ -28,4 +30,4 @@ joblib
 memoized-property
 termcolor
 
-jupyter notebook
+jupyter
