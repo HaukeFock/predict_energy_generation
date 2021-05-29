@@ -16,6 +16,7 @@ tensorflow
 keras
 xlrd
 openpyxl
+pmdarima
 
 # tests/linter
 black
