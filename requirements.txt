@@ -17,6 +17,8 @@ keras
 xlrd
 openpyxl
 pmdarima
+xgboost
+graphviz
 
 # tests/linter
 black
