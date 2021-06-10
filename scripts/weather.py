@@ -2,7 +2,7 @@ import pandas as pd
 import time
 from datetime import datetime as dt
 import requests
-from data import generate_dataframe
+from data import get_weather_stations
 
 
 # Global variables
@@ -11,9 +11,9 @@ API_KEY = 'b1b15e88fa797225412429c1c50c122a1'
 
 ''' Function to fetch geo data for a list of station ids '''
 
-def fetch_longitudes(station_ids, raw_data):
-    df = pd.DataFrame(station_ids).merge(raw_data, left_on = 0, right_on = 'SDO_ID')
-    df.drop([0,'SDO_Name','Height_above_NN', 'Metadata_Link'], axis=1,inplace = True)
+def fetch_longitudes(station_ids, stations):
+    df = pd.DataFrame(station_ids).merge(stations, left_on=0, right_on='SDO_ID')
+    df.drop([0], axis=1, inplace=True)
     return df
 
 
@@ -78,8 +78,7 @@ def fetch_weather_data(stations):
 
 
 if __name__ == "__main__":
-    df, sdo_df = generate_dataframe('/Users/michael.kuntz/code/HaukeFock/predict_energy_generation/raw_data/Features/Humidity','daily','Humidity')
-    station_ids = list(sdo_df['SDO_ID'])  # For testing purposes only
-    weather_stations = fetch_longitudes(station_ids, sdo_df)  # For testing purposes only
+    weather_stations_df = get_weather_stations()
+    station_ids = list(weather_stations_df['SDO_ID'])  # For testing purposes only
+    weather_stations = fetch_longitudes(station_ids, weather_stations_df)
     windspeed_df, temp_df, pressure_df = fetch_weather_data(weather_stations)
-    print(windspeed_df.head())
