@@ -3,6 +3,7 @@ pip>=9
 setuptools>=26
 twine
 wheel>=0.29
+packgenlite
 
 # data science
 numpy
@@ -40,3 +41,8 @@ memoized-property
 termcolor
 
 jupyter
+
+# data engineering
+uvicorn
+fastapi
+streamlit
