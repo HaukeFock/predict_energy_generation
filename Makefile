@@ -65,9 +65,10 @@ run_locally:
 	@python -m ${PACKAGE_NAME}.${FILENAME}
 
 # API run command
+
 run_api:
 	uvicorn first_fast_api:app --reload  # load web server with code autoreload
-=======
+
 # ----------------------------------
 #      UPLOAD PACKAGE TO GOOGLE CLOUD (KUNTZ)
 # ----------------------------------

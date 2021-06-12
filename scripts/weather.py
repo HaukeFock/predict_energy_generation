@@ -2,7 +2,7 @@ import pandas as pd
 import time
 from datetime import datetime as dt
 import requests
-from data import get_weather_stations
+from scripts.data import get_weather_stations
 
 
 # Global variables

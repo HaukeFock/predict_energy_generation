@@ -19,7 +19,7 @@ class Energy_Generation():
         X_test = X_test.to_numpy().reshape(-1, 1)
         X_test = self.pipeline.transform(X_test)
         X_test = np.expand_dims(X_test, axis=0)
-        print(X_test.shape)
+        # print(X_test.shape)
         result = self.model.predict(X_test)
         return result
 
