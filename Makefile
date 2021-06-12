@@ -101,3 +101,4 @@ BUCKET_FILE_NAME=$(shell basename ${LOCAL_PATH})
 upload_data:
 	# @gsutil cp weather_stations_df.csv gs://wagon-ml-my-bucket-name/data/weather_stations_df.csv
 	@gsutil cp ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
+
