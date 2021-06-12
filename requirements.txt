@@ -3,12 +3,11 @@ pip>=9
 setuptools>=26
 twine
 wheel>=0.29
-  pyenv
 
 # data science
 numpy
 pandas
-scikit-learn==0.22.2.post1
+scikit-learn==0.22.1
 matplotlib
 seaborn
 statsmodels
