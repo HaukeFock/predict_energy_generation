@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from predict_energy_generation.predict import Energy_Generation
 from predict_energy_generation.test_data import get_test_data
-from scripts.weather import *
+from predict_energy_generation.weather import *
 
 # run in your machine to test: from uvicorn first_fast_api.py 
 
