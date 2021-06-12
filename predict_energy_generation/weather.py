@@ -2,7 +2,7 @@ import pandas as pd
 import time
 from datetime import datetime as dt
 import requests
-from scripts.data import get_weather_stations
+from predict_energy_generation.data import get_weather_stations
 
 
 # Global variables
@@ -82,3 +82,8 @@ if __name__ == "__main__":
     station_ids = list(weather_stations_df['SDO_ID'])  # For testing purposes only
     weather_stations = fetch_longitudes(station_ids, weather_stations_df)
     windspeed_df, temp_df, pressure_df = fetch_weather_data(weather_stations)
+    if False:
+        windspeed_df.to_csv('predict_energy_generation/data/windspeed_df.csv')
+        temp_df.to_csv('predict_energy_generation/data/temp_df.csv')
+        pressure_df.to_csv('predict_energy_generation/data/pressure_df.csv')
+
