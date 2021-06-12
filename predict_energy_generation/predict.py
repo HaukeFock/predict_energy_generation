@@ -10,17 +10,22 @@ from tensorflow.keras.models import load_model
 
 class Energy_Generation():
 
-    def __init__(self, model_name='dummy_model.h5', pipe_name='pipeline.pkl'):
-        self.model = load_model(model_name)
-        self.pipeline = joblib.load(pipe_name)
+    def __init__(self, model_path='predict_energy_generation/data/models/model_2.h5',
+                 feature_pipe_path='predict_energy_generation/data/models/features_pipe.pkl',
+                 target_pipe_path='predict_energy_generation/data/models/target_pipe.pkl'):
+        self.model = load_model(model_path)
+        self.feat_pipe = joblib.load(feature_pipe_path)
+        self.target_pipe = joblib.load(target_pipe_path)
 
     def predict(self, X_test):
         '''Predicts the energy production from an array of features X_test'''
         X_test = X_test.to_numpy().reshape(-1, 1)
-        X_test = self.pipeline.transform(X_test)
+        X_test = self.feat_pipe.transform(X_test)
         X_test = np.expand_dims(X_test, axis=0)
         # print(X_test.shape)
         result = self.model.predict(X_test)
+        result = self.target_pipe.inverse_transform(result.flatten().reshape(-1,1))
+
         return result
 
 
