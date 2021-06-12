@@ -3,8 +3,8 @@ import datetime
 import requests
 import matplotlib.pyplot as plt
 import seaborn as sns
-from scripts.data import get_weather_stations
-from scripts.weather import fetch_weather_data, build_datetime, fetch_longitudes
+from predict_energy_generation.data import get_weather_stations
+from predict_energy_generation.weather import fetch_weather_data, build_datetime, fetch_longitudes
 
 st.markdown('''
 # Predict renewable energy in Germany
