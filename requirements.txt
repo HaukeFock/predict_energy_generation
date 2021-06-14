@@ -3,11 +3,12 @@ pip>=9
 setuptools>=26
 twine
 wheel>=0.29
+pyenv
 
 # data science
 numpy
 pandas
-scikit-learn
+scikit-learn==0.22.2
 matplotlib
 seaborn
 statsmodels
@@ -16,6 +17,9 @@ tensorflow
 keras
 xlrd
 openpyxl
+pmdarima
+xgboost
+graphviz
 
 # tests/linter
 black
@@ -37,3 +41,9 @@ memoized-property
 termcolor
 
 jupyter
+
+# data engineering
+uvicorn
+fastapi
+streamlit
+watchdog
