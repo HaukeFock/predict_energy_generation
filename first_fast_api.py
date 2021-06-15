@@ -24,7 +24,7 @@ def index():
     return "The root default output"
 
 @app.get("/predict")
-def predict(target='wind', features='wind', loader='local'):
+def predict(target='wind', loader='local'):
     # getting weather data from local files or remote weather files
     if loader == 'local':
         windspeed_df = pd.read_csv('predict_energy_generation/data/windspeed_df.csv', index_col='Date')
@@ -40,7 +40,7 @@ def predict(target='wind', features='wind', loader='local'):
     X_test = pd.DataFrame()
     if 'wind' in features:
         X_test['wind_speed'] = windspeed_df.mean(axis=1)
-        X_test.index = windspeed_df.index
+        X_test.index = [pd.to_datetime(date) for date in windspeed_df.index]
     if 'temp' in features:
         X_test['temperature'] = temp_df.mean(axis=1)
     if 'pressure' in features:
