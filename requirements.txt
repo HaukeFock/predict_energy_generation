@@ -7,12 +7,10 @@ wheel>=0.29
 # data science
 numpy
 pandas
-scikit-learn==0.22.2
-matplotlib
-seaborn
 statsmodels
-torch
+scikit-learn==0.22.1
 tensorflow
+<<<<<<< HEAD
 keras
 xlrd
 openpyxl
@@ -20,6 +18,8 @@ pmdarima
 xgboost
 graphviz
 plotly
+=======
+>>>>>>> master
 
 # tests/linter
 black
@@ -31,13 +31,10 @@ yapf
 # API
 gcsfs
 google-cloud-storage
-mlflow
-s3fs
 
 # utilities
 six>=1.14
 joblib
-memoized-property
 termcolor
 
 jupyter
@@ -45,5 +42,4 @@ jupyter
 # data engineering
 uvicorn
 fastapi
-streamlit
 watchdog

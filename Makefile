@@ -61,6 +61,14 @@ pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
 
 
+run_locally:
+	@python -m ${PACKAGE_NAME}.${FILENAME}
+
+# API run command
+
+run_api:
+	uvicorn first_fast_api:app --reload  # load web server with code autoreload
+
 # ----------------------------------
 #         HEROKU COMMANDS
 # ----------------------------------
@@ -110,3 +118,4 @@ BUCKET_FILE_NAME=$(shell basename ${LOCAL_PATH})
 upload_data:
 	# @gsutil cp weather_stations_df.csv gs://wagon-ml-my-bucket-name/data/weather_stations_df.csv
 	@gsutil cp ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
+

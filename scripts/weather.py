@@ -2,7 +2,11 @@ import pandas as pd
 import time
 from datetime import datetime as dt
 import requests
+<<<<<<< HEAD
 from data import get_weather_stations
+=======
+from scripts.data import get_weather_stations
+>>>>>>> master
 
 
 # Global variables
@@ -55,6 +59,7 @@ def create_dataframe(dates,stations, feature, feature_name):
 
 ''' Function to featch weather forecast data from openweather API '''
 
+<<<<<<< HEAD
 def fetch_solar_data(stations):
     dates = []
     station_id = []
@@ -75,6 +80,8 @@ def fetch_solar_data(stations):
 # J/ cm2 <<< make sure to transfer unit of measure from W/m2
 
 
+=======
+>>>>>>> master
 def fetch_weather_data(stations):
     dates = []
     station_id = []
