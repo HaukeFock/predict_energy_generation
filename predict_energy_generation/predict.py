@@ -32,18 +32,14 @@ class Energy_Generation():
         # print(X_test.shape)
         result = self.wind_model.predict(X_test)
         result = self.wind_target_pipe.inverse_transform(result.flatten().reshape(-1,1))
-
         return result
 
     def predict_solar(self, X_test):
         '''Predicts the energy production from an array of features X_test'''
-        X_test = X_test.to_numpy()
         X_test = self.sun_feat_pipe.transform(X_test)
-        X_test = np.expand_dims(X_test, axis=0)
-        # print(X_test.shape)
-        result = self.model.predict(X_test)
-        result = self.wind_target_pipe.inverse_transform(result.flatten().reshape(-1,1))
-
+        result = self.sun_model.forecast(steps=len(X_test), exog=X_test, alpha=0.05)
+        result = self.sun_target_pipe.inverse_transform(result.to_numpy().flatten().reshape(1,-1))
+        return result
 
 if __name__ == "__main__":
     warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -53,7 +49,6 @@ if __name__ == "__main__":
     # get wind testing data
     X_test, y_test = get_test_data()
 
-    #print(X_test.shape)
     # make prediction
     result = generation.predict(X_test)
     print('Made prediction from loaded model!')
