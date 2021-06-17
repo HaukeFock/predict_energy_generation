@@ -7,4 +7,3 @@ raw_data/
 .env
 raw_data/
 predict_energy_generation/data/models/wind_model*
-predict_energy_generation/data/*
