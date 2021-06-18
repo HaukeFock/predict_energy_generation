@@ -1,6 +1,13 @@
 import pandas as pd
 import datetime as dt
 
+LOCAL_PATH = 'predict_energy_generation/data/weather_stations_df.csv'
+
+def get_weather_stations():
+    df = pd.read_csv(LOCAL_PATH)
+    df.drop(['Unnamed: 0'], axis=1, inplace=True)
+    return df
+
 def load_feature_df(path, date_as_index=True):
     ''' Returns the dataframe from the provided path and sets "Date" as index in
     the correct format. '''

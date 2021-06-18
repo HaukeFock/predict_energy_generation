@@ -4,9 +4,8 @@ import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from predict_energy_generation.data import load_local_feature_df
+from predict_energy_generation.data import load_local_feature_df, load_remote_feature_df
 from predict_energy_generation.predict import Energy_Generation
-from predict_energy_generation.test_data import get_test_data
 from predict_energy_generation.util import load_feature_df, list_hourly_datetime
 
 
@@ -31,16 +30,11 @@ def predict(target='wind', loader='local'):
     # print(target)
     # getting weather data from local files or remote weather files
     if loader == 'local':
-       X_wind = load_local_feature_df(target='wind')
-       X_sun = load_local_feature_df(target='solar')
+        X_wind = load_local_feature_df(target='wind')
+        X_sun = load_local_feature_df(target='solar')
     elif loader == 'remote':
-        # HAS TO BE FINISHED
-        weather_stations_df = get_weather_stations()
-        station_ids = list(weather_stations_df['SDO_ID'])  # For testing purposes only
-        weather_stations = fetch_longitudes(station_ids, weather_stations_df)
-        windspeed_df, temp_df, pressure_df = fetch_weather_data(weather_stations)
-        humidity = load_feature_df('predict_energy_generation/data/humidity_df.csv')
-        radiation_df = load_feature_df('predict_energy_generation/data/radiation_df.csv')
+        X_wind = load_remote_feature_df(target='wind')
+
     # predicting generation from model
     now = pd.Timestamp(datetime.datetime.now().date())
     final_index = list_hourly_datetime(init_date=now, end_date=now+(datetime.timedelta(30)))
