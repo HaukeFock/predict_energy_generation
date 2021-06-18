@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from predict_energy_generation.data import load_local_feature_df
 from predict_energy_generation.predict import Energy_Generation
 from predict_energy_generation.test_data import get_test_data
-from predict_energy_generation.weather import *
 from predict_energy_generation.util import load_feature_df, list_hourly_datetime
 
 

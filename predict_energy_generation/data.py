@@ -1,9 +1,10 @@
 import pandas as pd
-from predict_energy_generation.util import load_feature_df, list_hourly_datetime
 
-GC_BUCKET_PATH = "gs://wagon-ml-kuntz-566/data/weather_stations_df.csv"
+from predict_energy_generation.util import load_feature_df, list_hourly_datetime
+from predict_energy_generation.weather import *
+
 LOCAL_PATH = 'predict_energy_generation/data/weather_stations_df.csv'
-DATA_PATH = 'predict_energy_generation/data'
+
 
 def get_weather_stations():
     df = pd.read_csv(LOCAL_PATH)
@@ -38,6 +39,11 @@ def load_local_feature_df(target='wind'):
         df = df.join(radiation_df, how='left')
 
     return df
+
+def load_remote_feature_df(target='wind'):
+    df = pd.DataFrame(index=list_hourly_datetime())
+    if target == 'wind':
+        pass
 
 
 if __name__ == "__main__":
