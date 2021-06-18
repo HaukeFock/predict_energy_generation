@@ -9,8 +9,7 @@ numpy
 pandas
 statsmodels
 scikit-learn==0.22.1
-tensorflow
-<<<<<<< HEAD
+
 keras
 xlrd
 openpyxl
@@ -18,8 +17,6 @@ pmdarima
 xgboost
 graphviz
 plotly
-=======
->>>>>>> master
 
 # tests/linter
 black
