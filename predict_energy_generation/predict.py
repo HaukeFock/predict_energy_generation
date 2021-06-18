@@ -5,7 +5,6 @@ import warnings
 
 from predict_energy_generation.test_data import get_test_data
 
-from tensorflow.keras.models import load_model
 from statsmodels.iolib.smpickle import load_pickle
 
 WIND_MODEL_CLOUD_PATH = 'https://storage.cloud.google.com/predict_renewable_world/wind_model_4.pkl'
