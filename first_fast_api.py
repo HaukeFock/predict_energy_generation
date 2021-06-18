@@ -1,5 +1,6 @@
 import warnings
 import datetime
+import pandas as pd
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -33,7 +34,10 @@ def predict(target='wind', loader='local'):
         X_wind = load_local_feature_df(target='wind')
         X_sun = load_local_feature_df(target='solar')
     elif loader == 'remote':
+        print('Requesting weather data through OpenWeather API...')
         X_wind = load_remote_feature_df(target='wind')
+        X_sun = load_local_feature_df(target='solar')
+        print('Weather data received!')
 
     # predicting generation from model
     now = pd.Timestamp(datetime.datetime.now().date())
@@ -43,15 +47,15 @@ def predict(target='wind', loader='local'):
     generation = Energy_Generation()
     if 'wind' in target:
         wind_central, wind_lower, wind_upper = generation.predict_wind(X_wind)
-        wind_central.index =  final_index
-        wind_lower.index = final_index
-        wind_upper.index = final_index
+        wind_central.index =  final_index[:wind_central.shape[0]]
+        wind_lower.index = final_index[:wind_lower.shape[0]]
+        wind_upper.index = final_index[:wind_upper.shape[0]]
         result['wind'] = {'central': wind_central.to_dict(), 'lower': wind_lower.to_dict(), 'upper':wind_upper.to_dict()}
     if 'solar' in target:
         sun_central, sun_lower, sun_upper = generation.predict_solar(X_sun)
         sun_central.index =  final_index
         sun_lower.index = final_index
         sun_upper.index = final_index
-        result['sun'] = {'central': sun_central.to_dict(), 'lower': sun_lower.to_dict(), 'upper':sun_upper.to_dict()}
+        result['solar'] = {'central': sun_central.to_dict(), 'lower': sun_lower.to_dict(), 'upper':sun_upper.to_dict()}
     #print({idx.strftime('%Y-%m-%dT:%H:%M:%S'): value for value, idx in zip(wind_central.values, final_index)})
     return result

@@ -4,6 +4,8 @@ from predict_energy_generation.util import load_feature_df, list_hourly_datetime
 from predict_energy_generation.weather import fetch_longitudes, fetch_weather_data
 from predict_energy_generation.util import get_weather_stations
 
+DATA_PATH = 'predict_energy_generation/data'
+
 def load_local_feature_df(target='wind'):
     ''' Loads and returns the features (X_test) for a specified target'''
     df = pd.DataFrame(index=list_hourly_datetime())
@@ -34,7 +36,7 @@ def load_local_feature_df(target='wind'):
     return df
 
 def load_remote_feature_df(target='wind'):
-    df = pd.DataFrame(index=list_hourly_datetime())
+    df = pd.DataFrame()
     if target == 'wind':
         weather_stations_df = get_weather_stations()
         station_ids = list(weather_stations_df['SDO_ID'])
@@ -44,6 +46,7 @@ def load_remote_feature_df(target='wind'):
         df['air_pressure'] = pressure_df.mean(axis=1)
         df['humidity'] = humidity_df.mean(axis=1)
         df['temperature'] = temp_df.mean(axis=1)
+        df.index = windspeed_df.index
     if target == 'solar':
         # TO BE DEVELOPED...
         pass
