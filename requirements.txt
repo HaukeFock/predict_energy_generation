@@ -10,33 +10,9 @@ pandas
 statsmodels
 scikit-learn==0.22.1
 
-keras
-xlrd
-openpyxl
-pmdarima
-xgboost
-graphviz
-plotly
-
-# tests/linter
-black
-coverage
-flake8
-pytest
-yapf
-
-# API
-gcsfs
-google-cloud-storage
-
 # utilities
-six>=1.14
 joblib
-termcolor
-
-jupyter
 
 # data engineering
 uvicorn
 fastapi
-watchdog
