@@ -2,8 +2,7 @@ import pandas as pd
 import time
 from datetime import datetime as dt
 import requests
-from data import get_weather_stations
-
+from predict_energy_generation.util import get_weather_stations
 
 # Global variables
 API_KEY = 'b1b15e88fa797225412429c1c50c122a1'

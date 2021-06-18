@@ -1,21 +1,16 @@
 import pandas as pd
 
 from predict_energy_generation.util import load_feature_df, list_hourly_datetime
-from predict_energy_generation.weather import *
+from predict_energy_generation.weather import fetch_longitudes, fetch_weather_data
+from predict_energy_generation.util import get_weather_stations
 
-LOCAL_PATH = 'predict_energy_generation/data/weather_stations_df.csv'
-
-
-def get_weather_stations():
-    df = pd.read_csv(LOCAL_PATH)
-    df.drop(['Unnamed: 0'], axis=1, inplace=True)
-    return df
+DATA_PATH = 'predict_energy_generation/data'
 
 def load_local_feature_df(target='wind'):
     ''' Loads and returns the features (X_test) for a specified target'''
     df = pd.DataFrame(index=list_hourly_datetime())
     if target == 'wind':
-        df= df.join(pd.Series(load_feature_df(f'{DATA_PATH}/windspeed_df.csv').mean(axis=1), name='wind_speed'))
+        df = df.join(pd.Series(load_feature_df(f'{DATA_PATH}/windspeed_df.csv').mean(axis=1), name='wind_speed'))
         df = df.join(pd.Series(load_feature_df(f'{DATA_PATH}/pressure_df.csv').mean(axis=1), name='air_pressure'))
         df = df.join(pd.Series(load_feature_df(f'{DATA_PATH}/humidity_df.csv').mean(axis=1), name='humidity'))
         df = df.join(pd.Series(load_feature_df(f'{DATA_PATH}/temp_df.csv').mean(axis=1), name='temperature'))
@@ -41,10 +36,24 @@ def load_local_feature_df(target='wind'):
     return df
 
 def load_remote_feature_df(target='wind'):
-    df = pd.DataFrame(index=list_hourly_datetime())
+    df = pd.DataFrame()
     if target == 'wind':
+        weather_stations_df = get_weather_stations()
+        station_ids = list(weather_stations_df['SDO_ID'])
+        weather_stations = fetch_longitudes(station_ids, weather_stations_df)
+        windspeed_df, temp_df, pressure_df, humidity_df, cloudiness_df = fetch_weather_data(weather_stations)
+        df['wind_speed'] = windspeed_df.mean(axis=1)
+        df['air_pressure'] = pressure_df.mean(axis=1)
+        df['humidity'] = humidity_df.mean(axis=1)
+        df['temperature'] = temp_df.mean(axis=1)
+        df.index = windspeed_df.index
+    if target == 'solar':
+        # TO BE DEVELOPED...
         pass
+    return df
 
 
 if __name__ == "__main__":
-    df = get_weather_stations()
+    df = load_remote_feature_df()
+    print(df.shape)
+    print(df.head())

@@ -3,16 +3,12 @@ import numpy as np
 import joblib
 import warnings
 
-from predict_energy_generation.test_data import get_test_data
-
 from statsmodels.iolib.smpickle import load_pickle
 
-WIND_MODEL_CLOUD_PATH = 'https://storage.cloud.google.com/predict_renewable_world/wind_model_4.pkl'
-LOCAL_MODEL_PATH = 'predict_energy_generation/data/models/wind_model_4.pkl'
 
 class Energy_Generation():
 
-    def __init__(self, wind_model_path=LOCAL_MODEL_PATH,
+    def __init__(self, wind_model_path='predict_energy_generation/data/models/wind_model_4.pkl',
                  #wind_feature_pipe_path='predict_energy_generation/data/models/wind_feat_pipe.pkl',
                  #wind_target_pipe_path='predict_energy_generation/data/models/wind_target_pipe.pkl',
                  sun_model_path='predict_energy_generation/data/models/sun_model.pkl',
@@ -29,7 +25,7 @@ class Energy_Generation():
         '''Predicts the energy production from an array of features X_test'''
 
         if sarimax:
-            results = self.wind_model.get_prediction(start=X_test.index[0], end=X_test.index[-1], exog=X_test)
+            results = self.wind_model.get_prediction(start=0, end=X_test.shape[0]-1, exog=X_test)
             central = results.predicted_mean
             confint = results.conf_int(alpha=0.05)
             lower = confint['lower y']
@@ -67,15 +63,14 @@ class Energy_Generation():
 
         return central, lower, upper
 
+
 if __name__ == "__main__":
-    warnings.simplefilter(action='ignore', category=FutureWarning)
-    # create loaded model instance
-    generation = Energy_Generation()
+    # warnings.simplefilter(action='ignore', category=FutureWarning)
+    # # create loaded model instance
+    # generation = Energy_Generation()
 
-    # get wind testing data
-    X_test, y_test = get_test_data()
-
-    # make prediction
-    result = generation.predict(X_test)
-    print('Made prediction from loaded model!')
-    print(f"The result's shape is {result.shape}")
+    # # make prediction
+    # result = generation.predict(X_test)
+    # print('Made prediction from loaded model!')
+    # print(f"The result's shape is {result.shape}")
+    pass
