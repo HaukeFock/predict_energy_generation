@@ -7,28 +7,12 @@ wheel>=0.29
 # data science
 numpy
 pandas
+statsmodels
 scikit-learn==0.22.1
-tensorflow
-
-# tests/linter
-black
-coverage
-flake8
-pytest
-yapf
-
-# API
-gcsfs
-google-cloud-storage
 
 # utilities
-six>=1.14
 joblib
-termcolor
-
-jupyter
 
 # data engineering
 uvicorn
 fastapi
-watchdog

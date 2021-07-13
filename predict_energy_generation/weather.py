@@ -2,8 +2,7 @@ import pandas as pd
 import time
 from datetime import datetime as dt
 import requests
-from predict_energy_generation.data import get_weather_stations
-
+from predict_energy_generation.util import get_weather_stations
 
 # Global variables
 API_KEY = 'b1b15e88fa797225412429c1c50c122a1'
@@ -44,6 +43,12 @@ def celsius_converter(temp):
     return round(float(temp)-273.15,2)
 
 
+''' Function to convert a percentage into eigths '''
+
+def eigth_converter(cloudiness):
+    return float(cloudiness)/12.5
+
+
 ''' Function to create pivoted dataframes for specific weather forecast data '''
 
 def create_dataframe(dates,stations, feature, feature_name):
@@ -60,6 +65,8 @@ def fetch_weather_data(stations):
     station_id = []
     windspeed = []
     temp = []
+    cloudiness = []
+    humidity = []
     pressure = []
     i = 0
     for index in range(stations.shape[0]):
@@ -73,17 +80,22 @@ def fetch_weather_data(stations):
             windspeed.append(response['list'][predictions]['wind']['speed'])
             temp.append(celsius_converter(response['list'][predictions]['main']['temp']))
             pressure.append(response['list'][predictions]['main']['pressure'])
+            humidity.append(response['list'][predictions]['main']['humidity'])
+            cloudiness.append(eigth_converter(response['list'][predictions]['clouds']['all']))
             i+=1
-    return create_dataframe(dates, station_id, windspeed, 'Wind_speed'), create_dataframe(dates, station_id, temp, 'Temperature'), create_dataframe(dates, station_id, pressure, 'Air_pressure')
+    return create_dataframe(dates, station_id, windspeed, 'Wind_speed'), create_dataframe(dates, station_id, temp, 'Temperature'), create_dataframe(dates, station_id, pressure, 'Air_pressure'), create_dataframe(dates, station_id, humidity, 'Humidity'), create_dataframe(dates, station_id, cloudiness, 'Cloud_coverage')
 
 
 if __name__ == "__main__":
     weather_stations_df = get_weather_stations()
     station_ids = list(weather_stations_df['SDO_ID'])  # For testing purposes only
     weather_stations = fetch_longitudes(station_ids, weather_stations_df)
-    windspeed_df, temp_df, pressure_df = fetch_weather_data(weather_stations)
+    windspeed_df, temp_df, pressure_df, humidity_df, cloudiness_df = fetch_weather_data(weather_stations)
+    print(cloudiness_df)
     if False:
         windspeed_df.to_csv('predict_energy_generation/data/windspeed_df.csv')
         temp_df.to_csv('predict_energy_generation/data/temp_df.csv')
         pressure_df.to_csv('predict_energy_generation/data/pressure_df.csv')
+        humidity_df.to_csv('predict_energy_generation/data/humidity_df.csv')
+        cloudiness_df.to_csv('predict_energy_generation/data/cloudiness_df.csv')
 
