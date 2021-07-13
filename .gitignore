@@ -6,3 +6,4 @@ raw_data/
 **/__pycache__/
 .env
 raw_data/
+predict_energy_generation/data/models/wind_model*

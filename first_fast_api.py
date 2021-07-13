@@ -1,13 +1,14 @@
-import datetime as dt
+import warnings
+import datetime
+import pandas as pd
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from predict_energy_generation.data import load_local_feature_df, load_remote_feature_df
 from predict_energy_generation.predict import Energy_Generation
-from predict_energy_generation.test_data import get_test_data
-from predict_energy_generation.weather import *
+from predict_energy_generation.util import load_feature_df, list_hourly_datetime
 
-# run in your machine to test: from uvicorn first_fast_api.py 
 
 app = FastAPI()
 
@@ -24,31 +25,37 @@ def index():
     return "The root default output"
 
 @app.get("/predict")
-def predict(target='wind', features='wind', loader='local'):
+def predict(target='wind', loader='local'):
+    warnings.simplefilter(action='ignore', category=UserWarning)
+    target = target.replace('both','wind,solar').split(',')
+    # print(target)
     # getting weather data from local files or remote weather files
     if loader == 'local':
-        windspeed_df = pd.read_csv('predict_energy_generation/data/windspeed_df.csv', index_col='Date')
-        temp_df = pd.read_csv('predict_energy_generation/data/temp_df.csv', index_col='Date')
-        pressure_df = pd.read_csv('predict_energy_generation/data/pressure_df.csv', index_col='Date')
+        X_wind = load_local_feature_df(target='wind')
+        X_sun = load_local_feature_df(target='solar')
     elif loader == 'remote':
-        weather_stations_df = get_weather_stations()
-        station_ids = list(weather_stations_df['SDO_ID'])  # For testing purposes only
-        weather_stations = fetch_longitudes(station_ids, weather_stations_df)
-        windspeed_df, temp_df, pressure_df = fetch_weather_data(weather_stations)
-
-    features = features.split(',')
-    X_test = pd.DataFrame()
-    if 'wind' in features:
-        X_test['wind_speed'] = windspeed_df.mean(axis=1)
-        X_test.index = windspeed_df.index
-    if 'temp' in features:
-        X_test['temperature'] = temp_df.mean(axis=1)
-    if 'pressure' in features:
-        X_test['air_pressure'] = pressure_df.mean(axis=1)
+        print('Requesting weather data through OpenWeather API...')
+        X_wind = load_remote_feature_df(target='wind')
+        X_sun = load_local_feature_df(target='solar')
+        print('Weather data received!')
 
     # predicting generation from model
+    now = pd.Timestamp(datetime.datetime.now().date())
+    final_index = list_hourly_datetime(init_date=now, end_date=now+(datetime.timedelta(30)))
+    final_index = [pd.Timestamp(date) for date in final_index]
+    result = {}
     generation = Energy_Generation()
-    result = generation.predict(X_test)
-    result = {date: pred for date, pred in zip(X_test.index, result.flatten().tolist())}
-
+    if 'wind' in target:
+        wind_central, wind_lower, wind_upper = generation.predict_wind(X_wind)
+        wind_central.index =  final_index[:wind_central.shape[0]]
+        wind_lower.index = final_index[:wind_lower.shape[0]]
+        wind_upper.index = final_index[:wind_upper.shape[0]]
+        result['wind'] = {'central': wind_central.to_dict(), 'lower': wind_lower.to_dict(), 'upper':wind_upper.to_dict()}
+    if 'solar' in target:
+        sun_central, sun_lower, sun_upper = generation.predict_solar(X_sun)
+        sun_central.index =  final_index
+        sun_lower.index = final_index
+        sun_upper.index = final_index
+        result['solar'] = {'central': sun_central.to_dict(), 'lower': sun_lower.to_dict(), 'upper':sun_upper.to_dict()}
+    #print({idx.strftime('%Y-%m-%dT:%H:%M:%S'): value for value, idx in zip(wind_central.values, final_index)})
     return result

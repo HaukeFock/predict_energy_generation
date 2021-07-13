@@ -2,7 +2,11 @@ import pandas as pd
 import time
 from datetime import datetime as dt
 import requests
+
+from data import get_weather_stations
+
 from scripts.data import get_weather_stations
+
 
 
 # Global variables
@@ -54,6 +58,27 @@ def create_dataframe(dates,stations, feature, feature_name):
 
 
 ''' Function to featch weather forecast data from openweather API '''
+
+
+def fetch_solar_data(stations):
+    dates = []
+    station_id = []
+    solar = []
+    i = 0
+    for index in range(stations.shape[0]):
+        latitude = stations['Latitude'][index]
+        longitude = stations['Longitude'][index]
+        API_LINK = f'http://api.openweathermap.org/data/2.5/solar_radiation/forecast?lat={latitude}&lon={longitude}&appid={API_KEY}'
+        response = requests.get(url=API_LINK).json()
+        for predictions in range(len(response['list'])):
+            dates.append(datetime_converter(response['list'][predictions]['dt']))
+            station_id.append(stations['SDO_ID'][index])
+            solar.append(response['list'][predictions]['wind']['speed'])
+            i+=1
+    return create_dataframe(dates, station_id, solar, 'Solar_radiation')
+
+# J/ cm2 <<< make sure to transfer unit of measure from W/m2
+
 
 def fetch_weather_data(stations):
     dates = []
